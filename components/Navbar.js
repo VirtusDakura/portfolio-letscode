@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { teamMembers } from "@/data/team";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [teamDropdown, setTeamDropdown] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -25,15 +23,6 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  // Close dropdown on outside click
-  useEffect(() => {
-    const close = () => setTeamDropdown(false);
-    if (teamDropdown) {
-      document.addEventListener("click", close);
-      return () => document.removeEventListener("click", close);
-    }
-  }, [teamDropdown]);
-
   return (
     <>
       <header
@@ -50,39 +39,7 @@ export default function Navbar() {
             <Link href="/" className="navbar__link">Home</Link>
             <Link href="/#about" className="navbar__link">About</Link>
             <Link href="/#services" className="navbar__link">Services</Link>
-
-            {/* Team dropdown */}
-            <div className="navbar__dropdown">
-              <button
-                className="navbar__link navbar__link--dropdown"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setTeamDropdown(!teamDropdown);
-                }}
-              >
-                Our Team
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" className={`navbar__chevron ${teamDropdown ? "navbar__chevron--open" : ""}`}>
-                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              <div className={`navbar__dropdown-menu ${teamDropdown ? "navbar__dropdown-menu--open" : ""}`}>
-                {teamMembers.map((m) => (
-                  <Link
-                    key={m.slug}
-                    href={`/team/${m.slug}`}
-                    className="navbar__dropdown-item"
-                    onClick={() => setTeamDropdown(false)}
-                  >
-                    <span className="navbar__dropdown-avatar">{m.name.charAt(0)}</span>
-                    <div>
-                      <span className="navbar__dropdown-name">{m.name}</span>
-                      <span className="navbar__dropdown-role">{m.role}</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
+            <Link href="/#team" className="navbar__link">Our Team</Link>
             <Link href="/#contact" className="navbar__link">Contact</Link>
           </nav>
 
@@ -127,20 +84,7 @@ export default function Navbar() {
             <Link href="/" className="mobile-nav__link" onClick={() => setMobileOpen(false)}>Home</Link>
             <Link href="/#about" className="mobile-nav__link" onClick={() => setMobileOpen(false)}>About</Link>
             <Link href="/#services" className="mobile-nav__link" onClick={() => setMobileOpen(false)}>Services</Link>
-            <div className="mobile-nav__divider" />
-            <span className="mobile-nav__label">Team</span>
-            {teamMembers.map((m) => (
-              <Link
-                key={m.slug}
-                href={`/team/${m.slug}`}
-                className="mobile-nav__link mobile-nav__link--sub"
-                onClick={() => setMobileOpen(false)}
-              >
-                {m.name}
-                <span className="mobile-nav__link-role">{m.role}</span>
-              </Link>
-            ))}
-            <div className="mobile-nav__divider" />
+            <Link href="/#team" className="mobile-nav__link" onClick={() => setMobileOpen(false)}>Our Team</Link>
             <Link href="/#contact" className="mobile-nav__link" onClick={() => setMobileOpen(false)}>Contact</Link>
           </nav>
 
