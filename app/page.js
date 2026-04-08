@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Image from "next/image";
 import { portfolioList } from "@/data/portfolios";
 
 const services = [
@@ -27,13 +29,15 @@ const services = [
 const categoryCount = new Set(portfolioList.map((portfolio) => portfolio.category)).size;
 
 export default function HomePage() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <>
       <header id="header" className="header d-flex align-items-center fixed-top">
         <div className="container-fluid container-xl position-relative d-flex align-items-center">
-          <a href="/" className="logo d-flex align-items-center me-auto">
+          <Link href="/" className="logo d-flex align-items-center me-auto">
             <h1 className="sitename">LetsCode</h1>
-          </a>
+          </Link>
 
           <nav id="navmenu" className="navmenu">
             <ul>
@@ -57,7 +61,7 @@ export default function HomePage() {
                 <ul>
                   {portfolioList.map((portfolio) => (
                     <li key={portfolio.slug}>
-                      <a href={`/${portfolio.slug}`}>{portfolio.name}</a>
+                      <Link href={`/${portfolio.slug}`}>{portfolio.name}</Link>
                     </li>
                   ))}
                 </ul>
@@ -75,7 +79,16 @@ export default function HomePage() {
 
       <main className="main">
         <section id="hero" className="hero section dark-background">
-          <img src="/assets/img/profile/profile-bg-5.webp" alt="LetsCode background" data-aos="fade-in" />
+          <Image
+            src="/assets/img/profile/profile-bg-5.webp"
+            alt="LetsCode background"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            style={{ objectFit: "cover" }}
+            data-aos="fade-in"
+          />
 
           <div className="container" data-aos="fade-up" data-aos-delay="100">
             <div className="row justify-content-center">
@@ -90,9 +103,6 @@ export default function HomePage() {
                   <span className="typed-cursor" aria-hidden="true"></span>
                 </p>
                 <div className="social-links">
-                  <a href="https://github.com" target="_blank" rel="noreferrer"><i className="bi bi-github"></i></a>
-                  <a href="https://linkedin.com" target="_blank" rel="noreferrer"><i className="bi bi-linkedin"></i></a>
-                  <a href="https://x.com" target="_blank" rel="noreferrer"><i className="bi bi-twitter-x"></i></a>
                   <a href="#portfolio-tabs"><i className="bi bi-person-lines-fill"></i></a>
                 </div>
               </div>
@@ -116,7 +126,13 @@ export default function HomePage() {
                 <div className="profile-card">
                   <div className="profile-header">
                     <div className="profile-avatar">
-                      <img src="/assets/img/profile/profile-square-3.webp" className="img-fluid" alt="LetsCode" />
+                      <Image
+                        src="/assets/img/profile/profile-square-3.webp"
+                        width={200}
+                        height={200}
+                        className="img-fluid"
+                        alt="LetsCode Team"
+                      />
                       <div className="status-indicator"></div>
                     </div>
                     <h3>LetsCode Team</h3>
@@ -205,7 +221,7 @@ export default function HomePage() {
             <ul className="portfolio-filters portfolio-person-tabs" data-aos="fade-up" data-aos-delay="200">
               {portfolioList.map((portfolio, index) => (
                 <li className={index === 0 ? "filter-active" : ""} key={portfolio.slug}>
-                  <a href={`/${portfolio.slug}`}>{portfolio.name}</a>
+                  <Link href={`/${portfolio.slug}`}>{portfolio.name}</Link>
                 </li>
               ))}
             </ul>
@@ -216,7 +232,7 @@ export default function HomePage() {
                   <div className="person-tab-card">
                     <h4>{portfolio.name}</h4>
                     <p>{portfolio.headline}</p>
-                    <a className="person-tab-link" href={`/${portfolio.slug}`}>View Portfolio <i className="bi bi-arrow-right"></i></a>
+                    <Link className="person-tab-link" href={`/${portfolio.slug}`}>View Portfolio <i className="bi bi-arrow-right"></i></Link>
                   </div>
                 </div>
               ))}
@@ -235,25 +251,20 @@ export default function HomePage() {
             <div className="row gy-4">
               <div className="col-lg-4">
                 <div className="info-item"><div className="icon-wrapper"><i className="bi bi-geo-alt"></i></div><div><h3>Address</h3><p>Kumasi, Ghana</p></div></div>
-                <div className="info-item"><div className="icon-wrapper"><i className="bi bi-telephone"></i></div><div><h3>Call</h3><p>+233 000 000 000</p></div></div>
                 <div className="info-item"><div className="icon-wrapper"><i className="bi bi-envelope"></i></div><div><h3>Email</h3><p>letscode@example.com</p></div></div>
               </div>
 
               <div className="col-lg-8">
-                <form action="#" method="post" className="php-email-form">
+                <div className="php-email-form">
                   <div className="row gy-4">
-                    <div className="col-md-6"><input type="text" name="name" className="form-control" placeholder="Your Name" required /></div>
-                    <div className="col-md-6"><input type="email" className="form-control" name="email" placeholder="Your Email" required /></div>
-                    <div className="col-md-12"><input type="text" className="form-control" name="subject" placeholder="Subject" required /></div>
-                    <div className="col-md-12"><textarea className="form-control" name="message" rows="6" placeholder="Message" required></textarea></div>
                     <div className="col-md-12 text-center">
-                      <div className="loading">Loading</div>
-                      <div className="error-message"></div>
-                      <div className="sent-message">Your message has been sent. Thank you!</div>
-                      <button type="submit">Send Message</button>
+                      <p className="mb-3">Visit our portfolio tabs to explore each team member&apos;s profile.</p>
+                      <a href="#portfolio-tabs">
+                        <button type="button">View Portfolios</button>
+                      </a>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
@@ -263,7 +274,8 @@ export default function HomePage() {
       <footer id="footer" className="footer">
         <div className="container copyright text-center mt-4">
           <p>
-            © <span>Copyright</span> <strong className="px-1 sitename">LetsCode</strong>
+            © {currentYear}{" "}
+            <strong className="px-1 sitename">LetsCode</strong>
             <span> All Rights Reserved</span>
           </p>
         </div>

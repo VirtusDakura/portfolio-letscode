@@ -1,4 +1,6 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import { portfolioBySlug, portfolioList } from "@/data/portfolios";
 
 const serviceIcons = [
@@ -18,8 +20,9 @@ export function generateStaticParams() {
   return portfolioList.map(({ slug }) => ({ slug }));
 }
 
-export function generateMetadata({ params }) {
-  const portfolio = portfolioBySlug[params.slug];
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const portfolio = portfolioBySlug[slug];
 
   if (!portfolio) {
     return {
@@ -34,20 +37,23 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function PortfolioPage({ params }) {
-  const portfolio = portfolioBySlug[params.slug];
+export default async function PortfolioPage({ params }) {
+  const { slug } = await params;
+  const portfolio = portfolioBySlug[slug];
 
   if (!portfolio) {
     notFound();
   }
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <>
       <header id="header" className="header d-flex align-items-center fixed-top">
         <div className="container-fluid container-xl position-relative d-flex align-items-center">
-          <a href="/" className="logo d-flex align-items-center me-auto">
+          <Link href="/" className="logo d-flex align-items-center me-auto">
             <h1 className="sitename">LetsCode</h1>
-          </a>
+          </Link>
 
           <nav id="navmenu" className="navmenu">
             <ul>
@@ -71,9 +77,9 @@ export default function PortfolioPage({ params }) {
                 <ul>
                   {portfolioList.map((person) => (
                     <li key={person.slug}>
-                      <a className={person.slug === portfolio.slug ? "active" : ""} href={`/${person.slug}`}>
+                      <Link className={person.slug === portfolio.slug ? "active" : ""} href={`/${person.slug}`}>
                         {person.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -93,7 +99,16 @@ export default function PortfolioPage({ params }) {
 
       <main className="main">
         <section id="hero" className="hero section dark-background">
-          <img src={portfolio.cover} alt={portfolio.name} data-aos="fade-in" />
+          <Image
+            src={portfolio.cover}
+            alt={portfolio.name}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            style={{ objectFit: "cover" }}
+            data-aos="fade-in"
+          />
           <div className="container" data-aos="fade-up" data-aos-delay="100">
             <div className="row justify-content-center">
               <div className="col-lg-8 text-center">
@@ -106,9 +121,9 @@ export default function PortfolioPage({ params }) {
                   <a href={portfolio.linkedin} target="_blank" rel="noreferrer">
                     <i className="bi bi-linkedin"></i>
                   </a>
-                  <a href="/">
+                  <Link href="/">
                     <i className="bi bi-house"></i>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -128,7 +143,13 @@ export default function PortfolioPage({ params }) {
                 <div className="profile-card">
                   <div className="profile-header">
                     <div className="profile-avatar">
-                      <img src={portfolio.image} className="img-fluid" alt={portfolio.name} />
+                      <Image
+                        src={portfolio.image}
+                        width={200}
+                        height={200}
+                        className="img-fluid"
+                        alt={portfolio.name}
+                      />
                       <div className="status-indicator"></div>
                     </div>
                     <h3>{portfolio.name}</h3>
@@ -257,9 +278,11 @@ export default function PortfolioPage({ params }) {
                 <div className="col-lg-4 col-md-6" key={project.title}>
                   <div className="portfolio-card">
                     <div className="portfolio-image-container">
-                      <img
+                      <Image
                         src={`/assets/img/portfolio/portfolio-${(index % 6) + 1}.webp`}
                         alt={project.title}
+                        width={600}
+                        height={400}
                         className="img-fluid"
                         loading="lazy"
                       />
@@ -287,7 +310,7 @@ export default function PortfolioPage({ params }) {
               <div className="col-lg-4">
                 <div className="info-item"><div className="icon-wrapper"><i className="bi bi-geo-alt"></i></div><div><h3>Address</h3><p>{portfolio.location}</p></div></div>
                 <div className="info-item"><div className="icon-wrapper"><i className="bi bi-linkedin"></i></div><div><h3>LinkedIn</h3><p>{portfolio.name}</p></div></div>
-                <div className="info-item"><div className="icon-wrapper"><i className="bi bi-house"></i></div><div><h3>Hub</h3><p><a href="/">Back to LetsCode Home</a></p></div></div>
+                <div className="info-item"><div className="icon-wrapper"><i className="bi bi-house"></i></div><div><h3>Hub</h3><p><Link href="/">Back to LetsCode Home</Link></p></div></div>
               </div>
 
               <div className="col-lg-8">
@@ -310,7 +333,8 @@ export default function PortfolioPage({ params }) {
       <footer id="footer" className="footer">
         <div className="container copyright text-center mt-4">
           <p>
-            © <span>Copyright</span> <strong className="px-1 sitename">LetsCode</strong>
+            © {currentYear}{" "}
+            <strong className="px-1 sitename">LetsCode</strong>
             <span> All Rights Reserved</span>
           </p>
         </div>
