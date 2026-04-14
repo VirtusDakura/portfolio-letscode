@@ -32,6 +32,15 @@ export default function AdminDashboard() {
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [deleteTarget, setDeleteTarget] = useState(null); // { id, name }
 
+  const [toast, setToast] = useState({ message: "", type: "success", visible: false });
+
+  const showToast = (message, type = "success") => {
+    setToast({ message, type, visible: true });
+    setTimeout(() => {
+      setToast(prev => ({ ...prev, visible: false }));
+    }, 3500);
+  };
+
   // Check for an active session on mount
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -114,8 +123,9 @@ export default function AdminDashboard() {
     const { error } = await supabase.from('team_members').delete().eq('id', deleteTarget.id);
     if (!error) {
       fetchTeam();
+      showToast(`${deleteTarget.name}'s profile was successfully deleted.`, "success");
     } else {
-      alert("Error deleting member: " + error.message);
+      showToast("Error deleting member: " + error.message, "error");
     }
     setDeleteTarget(null);
   };
@@ -131,7 +141,7 @@ export default function AdminDashboard() {
         finalImageUrl = await uploadImageToSupabase();
       } catch (err) {
         setUploadingImage(false);
-        alert(`Photo upload failed: ${err.message}. Did you make sure to configure your Storage Policy in Supabase?`);
+        showToast(`Photo upload failed: ${err.message}`, "error");
         return;
       }
     }
@@ -166,11 +176,12 @@ export default function AdminDashboard() {
     setUploadingImage(false);
 
     if (!apiError) {
+      showToast(editingId ? "Profile updated successfully!" : "Developer profile correctly published!");
       resetForm();
       fetchTeam(); // Refresh the table
       setActiveTab("directory"); // go back to directory view
     } else {
-      alert("Error saving member: " + apiError.message);
+      showToast("Error saving member: " + apiError.message, "error");
     }
   };
 
@@ -488,6 +499,30 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+
+      {/* TOAST SYSTEM */}
+      <div 
+        className={`fixed bottom-6 right-6 z-[100] transition-all duration-300 ease-out flex items-center gap-3 px-5 py-4 rounded-xl shadow-2xl border ${
+          toast.visible 
+            ? "opacity-100 translate-y-0" 
+            : "opacity-0 translate-y-8 pointer-events-none"
+        } ${
+          toast.type === "success" 
+            ? "bg-[var(--color-bg-card)] border-[var(--color-accent)]/30 text-[var(--color-heading)]"
+            : "bg-red-500 text-white border-red-600"
+        }`}
+      >
+        {toast.type === "success" ? (
+          <div className="w-7 h-7 rounded-full bg-[var(--color-accent)]/20 text-[var(--color-accent)] flex items-center justify-center shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+        ) : (
+           <div className="w-7 h-7 rounded-full bg-white/20 text-white flex items-center justify-center shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </div>
+        )}
+        <span className="font-medium text-sm max-w-[300px] leading-snug">{toast.message}</span>
+      </div>
 
     </div>
   );
