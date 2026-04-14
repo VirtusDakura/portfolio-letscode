@@ -22,11 +22,15 @@ export default function AdminDashboard() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [newBio, setNewBio] = useState("");
   const [newExpertise, setNewExpertise] = useState(""); 
-  const [newStack, setNewStack] = useState(""); 
+  const [newStack, setNewStack] = useState("");
   const [newProjects, setNewProjects] = useState([{ title: "", description: "" }]);
 
   // UI States
   const [activeTab, setActiveTab] = useState("directory"); // directory, new, settings
+  const [editingId, setEditingId] = useState(null);
+  const [existingImage, setExistingImage] = useState("");
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState(null); // { id, name }
 
   // Check for an active session on mount
   useEffect(() => {
@@ -52,12 +56,14 @@ export default function AdminDashboard() {
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setImageFile(file);
+      setImagePreviewUrl(URL.createObjectURL(file));
     }
   };
 
   const uploadImageToSupabase = async () => {
-    if (!imageFile) return "/images/profiles/placeholder.jpeg";
+    if (!imageFile) return existingImage || "/Logo.jpeg";
     
     // Assumes user created a public bucket called 'profiles'
     const fileExt = imageFile.name.split('.').pop();
@@ -69,11 +75,49 @@ export default function AdminDashboard() {
 
     if (uploadError) {
       console.error("Storage upload error:", uploadError);
-      return "/images/profiles/placeholder.jpeg";
+      throw new Error(uploadError.message);
     }
 
     const { data } = supabase.storage.from('profiles').getPublicUrl(fileName);
     return data.publicUrl;
+  };
+
+  const resetForm = () => {
+    setNewName(""); setNewRole(""); setNewLinkedin(""); setNewGithub(""); 
+    setImageFile(null); setExistingImage(""); setEditingId(null);
+    setImagePreviewUrl("");
+    setNewBio(""); setNewExpertise(""); setNewStack(""); 
+    setNewProjects([{ title: "", description: "" }]);
+  };
+
+  const handleEditClick = (member) => {
+    setEditingId(member.id);
+    setNewName(member.name);
+    setNewRole(member.role);
+    setNewLinkedin(member.linkedin);
+    setNewGithub(member.github);
+    setExistingImage(member.image);
+    setImagePreviewUrl("");
+    setNewBio(member.bio);
+    setNewExpertise(member.expertise ? member.expertise.join(", ") : "");
+    setNewStack(member.stack ? member.stack.join(", ") : "");
+    setNewProjects(member.projects && member.projects.length > 0 ? member.projects : [{ title: "", description: "" }]);
+    setActiveTab("new");
+  };
+
+  const requestDelete = (id, name) => {
+    setDeleteTarget({ id, name });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    const { error } = await supabase.from('team_members').delete().eq('id', deleteTarget.id);
+    if (!error) {
+      fetchTeam();
+    } else {
+      alert("Error deleting member: " + error.message);
+    }
+    setDeleteTarget(null);
   };
 
   const handleAddMember = async (e) => {
@@ -81,7 +125,16 @@ export default function AdminDashboard() {
     if (!newName || !newRole) return;
 
     setUploadingImage(true);
-    const uploadedImageUrl = await uploadImageToSupabase();
+    let finalImageUrl = existingImage;
+    if (imageFile) {
+      try {
+        finalImageUrl = await uploadImageToSupabase();
+      } catch (err) {
+        setUploadingImage(false);
+        alert(`Photo upload failed: ${err.message}. Did you make sure to configure your Storage Policy in Supabase?`);
+        return;
+      }
+    }
     
     const slug = newName.toLowerCase().replace(/\s+/g, '-');
     const expertiseArray = newExpertise.split(',').map(s => s.trim()).filter(Boolean);
@@ -93,7 +146,7 @@ export default function AdminDashboard() {
       role: newRole, 
       linkedin: newLinkedin, 
       github: newGithub,
-      image: uploadedImageUrl,
+      image: finalImageUrl,
       bio: newBio, 
       expertise: expertiseArray,
       stack: stackArray,
@@ -101,19 +154,23 @@ export default function AdminDashboard() {
       slug 
     };
 
-    const { error } = await supabase
-      .from('team_members')
-      .insert([payload]);
+    let apiError = null;
+    if (editingId) {
+      const { error } = await supabase.from('team_members').update(payload).eq('id', editingId);
+      apiError = error;
+    } else {
+      const { error } = await supabase.from('team_members').insert([payload]);
+      apiError = error;
+    }
 
     setUploadingImage(false);
 
-    if (!error) {
-      setNewName(""); setNewRole(""); setNewLinkedin(""); setNewGithub(""); setImageFile(null);
-      setNewBio(""); setNewExpertise(""); setNewStack(""); setNewProjects([{ title: "", description: "" }]);
+    if (!apiError) {
+      resetForm();
       fetchTeam(); // Refresh the table
       setActiveTab("directory"); // go back to directory view
     } else {
-      alert("Error adding member: " + error.message);
+      alert("Error saving member: " + apiError.message);
     }
   };
 
@@ -216,7 +273,7 @@ export default function AdminDashboard() {
           <button onClick={() => setActiveTab('directory')} className={`text-left px-5 py-3 rounded-xl text-sm font-medium transition-all shrink-0 md:w-full ${activeTab === 'directory' ? 'bg-[var(--color-accent)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-heading)] hover:bg-[var(--color-bg-raised)]'}`}>
             Profiles Directory
           </button>
-          <button onClick={() => setActiveTab('new')} className={`text-left px-5 py-3 rounded-xl text-sm font-medium transition-all shrink-0 md:w-full ${activeTab === 'new' ? 'bg-[var(--color-accent)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-heading)] hover:bg-[var(--color-bg-raised)]'}`}>
+          <button onClick={() => { setActiveTab('new'); resetForm(); }} className={`text-left px-5 py-3 rounded-xl text-sm font-medium transition-all shrink-0 md:w-full ${activeTab === 'new' && !editingId ? 'bg-[var(--color-accent)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-heading)] hover:bg-[var(--color-bg-raised)]'}`}>
             Add Developer
           </button>
           <button onClick={() => setActiveTab('settings')} className={`text-left px-5 py-3 rounded-xl text-sm font-medium transition-all shrink-0 md:w-full ${activeTab === 'settings' ? 'bg-[var(--color-accent)] text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-heading)] hover:bg-[var(--color-bg-raised)]'}`}>
@@ -271,8 +328,9 @@ export default function AdminDashboard() {
                           {member.name}
                         </td>
                         <td className="px-6 py-5 text-[var(--color-text-muted)]">{member.role}</td>
-                        <td className="px-6 py-5 text-right">
-                          <button onClick={() => alert('Editing functionality pending')} className="text-[var(--color-accent)] hover:underline text-sm font-medium mr-4">Edit</button>
+                        <td className="px-6 py-5 text-right space-x-4">
+                          <button onClick={() => handleEditClick(member)} className="text-[var(--color-accent)] hover:underline text-sm font-medium">Edit</button>
+                          <button onClick={() => requestDelete(member.id, member.name)} className="text-red-400 hover:text-red-300 hover:underline text-sm font-medium">Delete</button>
                         </td>
                       </tr>
                     ))
@@ -286,26 +344,41 @@ export default function AdminDashboard() {
         {/* TAB: NEW DEVELOPER */}
         {activeTab === 'new' && (
           <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-            <h1 className="text-3xl font-bold text-[var(--color-heading)] mb-2">Create Profile</h1>
-            <p className="text-[var(--color-text-muted)] mb-8">Add a new developer to exactly match the Letscode portfolio system.</p>
+            <div className="flex justify-between items-end mb-8">
+              <div>
+                <h1 className="text-3xl font-bold text-[var(--color-heading)] mb-2">{editingId ? "Edit Profile" : "Create Profile"}</h1>
+                <p className="text-[var(--color-text-muted)]">{editingId ? "Update existing developer details." : "Add a new developer to exactly match the Letscode portfolio system."}</p>
+              </div>
+              {editingId && (
+                <button onClick={() => { resetForm(); setActiveTab('directory'); }} className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-heading)] border border-[var(--color-border)] px-4 py-2 rounded-lg transition-colors">
+                  Cancel Edit
+                </button>
+              )}
+            </div>
             
             <form onSubmit={handleAddMember} className="space-y-8 bg-[var(--color-bg-card)] border border-[var(--color-border)] p-8 md:p-10 rounded-2xl shadow-sm">
               
               {/* IMAGE UPLOADER */}
               <div>
                 <label className="block text-sm font-medium text-[var(--color-heading)] mb-3">Profile Photo</label>
-                <div className="border-2 border-dashed border-[var(--color-border-hover)] bg-[var(--color-bg)] rounded-xl p-10 text-center hover:border-[var(--color-accent)] transition-colors cursor-pointer relative group">
+                <div className="border-2 border-dashed border-[var(--color-border-hover)] bg-[var(--color-bg)] rounded-xl py-8 px-4 text-center hover:border-[var(--color-accent)] transition-colors cursor-pointer relative group flex flex-col items-center justify-center min-h-[160px] overflow-hidden">
                   <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                  <div className="flex flex-col items-center justify-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                  
+                  {imagePreviewUrl || existingImage ? (
+                    <div className="absolute inset-0 w-full h-full rounded-xl overflow-hidden bg-black">
+                       <img src={imagePreviewUrl || existingImage} alt="Preview" className="w-full h-full object-cover opacity-60 group-hover:opacity-30 transition-opacity" />
+                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="bg-black/60 text-white px-4 py-2 rounded-lg text-sm font-medium backdrop-blur-md">Click to change photo</span>
+                       </div>
                     </div>
-                    {imageFile ? (
-                      <span className="text-[var(--color-accent)] font-medium">Selected: {imageFile.name} (Click to change)</span>
-                    ) : (
-                      <span className="text-[var(--color-text-muted)] font-medium">Click to upload developer photo</span>
-                    )}
-                  </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center gap-3 relative z-0">
+                      <div className="w-12 h-12 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                      </div>
+                      <span className="text-[var(--color-text-muted)] font-medium mt-2">Click to upload developer photo</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -374,7 +447,7 @@ export default function AdminDashboard() {
 
               <div className="pt-6 border-t border-[var(--color-border)]">
                 <button type="submit" disabled={uploadingImage} className="w-full md:w-auto md:px-12 btn btn--primary py-4 text-base rounded-xl font-bold disabled:opacity-70 disabled:cursor-wait">
-                  {uploadingImage ? "Uploading & Saving..." : "Publish Developer Profile"}
+                  {uploadingImage ? "Saving..." : editingId ? "Update Profile" : "Publish Developer Profile"}
                 </button>
               </div>
             </form>
@@ -401,6 +474,21 @@ export default function AdminDashboard() {
         )}
 
       </main>
+
+      {/* DELETE CONFIRMATION MODAL */}
+      {deleteTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl p-8 max-w-sm w-full shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <h3 className="text-xl font-bold text-[var(--color-heading)] mb-2">Delete Profile?</h3>
+            <p className="text-[var(--color-text-muted)] mb-8 text-sm leading-relaxed">Are you sure you want to permanently remove <span className="font-semibold text-[var(--color-text-emphasis)]">{deleteTarget.name}</span> from the portfolio? This action cannot be undone.</p>
+            <div className="flex justify-end gap-3 hover:cursor-pointer">
+              <button type="button" onClick={() => setDeleteTarget(null)} className="px-5 py-2.5 rounded-xl text-sm font-medium text-[var(--color-text)] hover:bg-[var(--color-bg-raised)] transition-colors border border-[var(--color-border)]">Cancel</button>
+              <button type="button" onClick={confirmDelete} className="px-5 py-2.5 rounded-xl text-sm font-medium bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors border border-red-500/20 hover:border-red-500">Delete Profile</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

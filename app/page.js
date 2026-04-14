@@ -1,4 +1,4 @@
-import { teamMembers } from "@/data/team";
+import { supabase } from "@/lib/supabase";
 import TeamCard from "@/components/TeamCard";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import TypeWriter from "@/components/TypeWriter";
@@ -68,7 +68,12 @@ const services = [
   },
 ];
 
-export default function HomePage() {
+export const revalidate = 0; // Prevent aggressive static caching
+
+export default async function HomePage() {
+  const { data: dbMembers } = await supabase.from('team_members').select('*').order('id', { ascending: true });
+  const teamMembers = dbMembers || [];
+
   return (
     <main>
       {/* ── Hero ── */}
