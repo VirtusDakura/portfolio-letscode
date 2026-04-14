@@ -1,5 +1,36 @@
 export const teamMembers = [
   {
+    slug: "felix-owusu",
+    name: "Felix Owusu",
+    role: "Full-Stack Engineer",
+    location: "KNUST, Kumasi",
+    linkedin: "https://www.linkedin.com/in/felix-owusu-15053a379/",
+    image: "/images/profiles/felix.jpeg",
+    bio: "Felix is a Chemistry undergraduate at KNUST and a Full-Stack Engineer with a strong frontend focus, building scalable academic and organizational platforms. Skilled in React, Next.js, Node.js, FastAPI, and more, he is currently developing a Student Project Submission Portal for supervisor-student collaboration. Academically grounded in chemistry and materials science, he has growing interests in machine learning and quantum computing, seeking to bridge software, data, and scientific problem solving.",
+    expertise: [
+      "Frontend & Backend Engineering",
+      "API Engineering",
+      "Machine Learning & Data Analytics",
+      "Computational Chemistry",
+      "Quantum Computing"
+    ],
+    stack: ["React", "Next.js", "Node.js", "FastAPI", "MongoDB", "Python", "C#"],
+    projects: [
+      {
+        title: "Student Project Submission Portal",
+        description: "Developing a collaborative portal for students and supervisors to manage and submit academic projects efficiently."
+      },
+      {
+        title: "GATHS Management System",
+        description: "Built organizational systems for the Ghana Association of Tourism & Hospitality Students."
+      },
+      {
+        title: "Tertiary Guide Platform",
+        description: "Created a comprehensive platform designed to guide and assist tertiary students throughout their university journey."
+      }
+    ]
+  },
+  {
     slug: "owusu-kenneth",
     name: "Owusu Kenneth",
     role: "Backend Developer & Founder, OptiMediX",
@@ -89,37 +120,6 @@ export const teamMembers = [
       {
         title: "Motion Design System",
         description: "Created a reusable animation library for consistent micro-interactions across multiple web projects."
-      }
-    ]
-  },
-  {
-    slug: "felix-owusu",
-    name: "Felix Owusu",
-    role: "Full-Stack Engineer",
-    location: "KNUST, Kumasi",
-    linkedin: "https://www.linkedin.com/in/felix-owusu-15053a379/",
-    image: "/images/profiles/felix.jpeg",
-    bio: "Felix is a Chemistry undergraduate at KNUST and a Full-Stack Engineer with a strong frontend focus, building scalable academic and organizational platforms. Skilled in React, Next.js, Node.js, FastAPI, and more, he is currently developing a Student Project Submission Portal for supervisor-student collaboration. Academically grounded in chemistry and materials science, he has growing interests in machine learning and quantum computing, seeking to bridge software, data, and scientific problem solving.",
-    expertise: [
-      "Frontend & Backend Engineering",
-      "API Engineering",
-      "Machine Learning & Data Analytics",
-      "Computational Chemistry",
-      "Quantum Computing"
-    ],
-    stack: ["React", "Next.js", "Node.js", "FastAPI", "MongoDB", "Python", "C#"],
-    projects: [
-      {
-        title: "Student Project Submission Portal",
-        description: "Developing a collaborative portal for students and supervisors to manage and submit academic projects efficiently."
-      },
-      {
-        title: "GATHS Management System",
-        description: "Built organizational systems for the Ghana Association of Tourism & Hospitality Students."
-      },
-      {
-        title: "Tertiary Guide Platform",
-        description: "Created a comprehensive platform designed to guide and assist tertiary students throughout their university journey."
       }
     ]
   },
