@@ -2,27 +2,27 @@ export const teamMembers = [
   {
     slug: "owusu-kenneth",
     name: "Owusu Kenneth",
-    role: "Backend Developer",
+    role: "Backend Developer & Founder, OptiMediX",
     location: "Ghana",
     linkedin: "https://www.linkedin.com/in/okenneth/",
-    image: "/images/profiles/kenneth.webp",
-    bio: "Kenneth is a methodical backend developer who brings scientific rigor to his code. With experience in data-heavy environments, he excels at building APIs, database-driven systems, and server-side logic that performs under pressure. He writes code the way he approaches problems — carefully, thoroughly, and with evidence.",
+    image: "/images/profiles/kenneth.jpeg",
+    bio: "Kenneth is the founder of OptiMediX, a health tech company transforming healthcare access and delivery through AI-powered diagnostics, telemedicine, and an innovative riders network for medical sample collection and drug delivery. A methodical backend developer who brings scientific rigor to his code, he excels at building APIs, database-driven systems, and server-side logic that performs under pressure. He is passionate about leveraging technology to address gaps in healthcare and create impactful, accessible solutions.",
     expertise: [
-      "REST API Design",
-      "Database Management",
-      "Data Processing",
-      "Server Administration",
-      "Technical Writing"
+      "Backend & API Development",
+      "Mobile App Development",
+      "Database Design",
+      "Health Tech & AI Diagnostics",
+      "UX & Web Design"
     ],
-    stack: ["Python", "Node.js", "PostgreSQL", "MongoDB", "Express.js"],
+    stack: ["Python", "Node.js", "PostgreSQL", "MongoDB", "Express.js", "Android"],
     projects: [
       {
-        title: "Data Processing API",
-        description: "Built a RESTful API that processes and transforms raw datasets into structured reports for research teams."
+        title: "OptiMediX Platform",
+        description: "Building a health tech platform with AI-powered diagnostics, telemedicine, and a riders network for medical sample collection and drug delivery."
       },
       {
-        title: "Inventory Management System",
-        description: "A full CRUD backend for managing lab equipment and supplies with role-based access and audit logging."
+        title: "Orin",
+        description: "Developing Orin — an innovative product under OptiMediX focused on streamlining healthcare workflows and improving patient outcomes."
       },
       {
         title: "Automated Reporting Service",
@@ -151,6 +151,37 @@ export const teamMembers = [
       {
         title: "Predictive Analytics Pipeline",
         description: "Built end-to-end data pipelines for predictive modeling in supply chain and transportation, enabling data-driven strategic decision-making."
+      }
+    ]
+  },
+  {
+    slug: "success-k-adzorze",
+    name: "Success K. Adzorze",
+    role: "Research & Data Analyst",
+    location: "KNUST, Ghana",
+    linkedin: "https://www.linkedin.com/in/success-k-adzorze/",
+    image: "/images/profiles/success-adzorze.jpeg",
+    bio: "Success is a KNUST graduate with a background in Pharmaceutics and Computational Chemistry, bringing scientific rigor and analytical thinking to every project. As a teaching and research assistant, he developed strong problem-solving, communication, and coordination skills. He actively seeks out challenges to enhance his abilities, and hard work, fatigue, and setbacks only motivate him to push further. His precision-driven mindset and team-first attitude make him a natural fit for data-driven projects.",
+    expertise: [
+      "Data Analysis",
+      "Computational Research",
+      "Scientific Writing",
+      "Problem Solving",
+      "Team Collaboration"
+    ],
+    stack: ["Python", "Excel", "R", "MATLAB", "SQL"],
+    projects: [
+      {
+        title: "Computational Chemistry Research",
+        description: "Conducted computational chemistry research at KNUST, applying analytical modeling and data-driven approaches to pharmaceutical studies."
+      },
+      {
+        title: "Research Data Dashboard",
+        description: "Built analytical dashboards for visualizing experimental data, enabling faster insights and better decision-making in research workflows."
+      },
+      {
+        title: "Academic Data Pipeline",
+        description: "Developed automated data processing scripts for cleaning, transforming, and analyzing large academic research datasets."
       }
     ]
   }
