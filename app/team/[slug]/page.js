@@ -1,16 +1,14 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { teamBySlug, teamMembers } from "@/data/team";
+import { supabase } from "@/lib/supabase";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 
-export function generateStaticParams() {
-  return teamMembers.map(({ slug }) => ({ slug }));
-}
+export const revalidate = 0; // Prevent caching so new profiles show instantly
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const member = teamBySlug[slug];
+  const { data: member } = await supabase.from('team_members').select('*').eq('slug', slug).single();
 
   if (!member) {
     return {
@@ -27,7 +25,9 @@ export async function generateMetadata({ params }) {
 
 export default async function TeamMemberPage({ params }) {
   const { slug } = await params;
-  const member = teamBySlug[slug];
+  
+  // Fetch specific developer from Supabase
+  const { data: member } = await supabase.from('team_members').select('*').eq('slug', slug).single();
 
   if (!member) {
     notFound();
