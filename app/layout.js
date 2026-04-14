@@ -1,7 +1,5 @@
 import { Inter, Space_Grotesk } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import "./globals.css";
 
 const inter = Inter({
@@ -40,10 +38,9 @@ export default function RootLayout({ children }) {
         </div>
         <div className="grain" aria-hidden="true" />
 
-        <Navbar />
-        {children}
-        <Footer />
-        <ScrollToTop />
+        <ClientLayoutWrapper>
+          {children}
+        </ClientLayoutWrapper>
       </body>
     </html>
   );
