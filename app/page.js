@@ -5,12 +5,22 @@ import TypeWriter from "@/components/TypeWriter";
 
 const services = [
   {
-    title: "Web Development",
+    title: "Web & Mobile Applications",
     description:
-      "We build fast, responsive web applications using modern frameworks like React, Next.js, and Node.js — optimised for performance and real-world use.",
+      "We build fast, responsive web and mobile applications using modern frameworks like React, Next.js, and Node.js — optimised for performance and real-world use.",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+      </svg>
+    ),
+  },
+  {
+    title: "AI-Powered Systems",
+    description:
+      "From intelligent automation to machine learning integrations — we build AI-powered solutions that help businesses make smarter decisions and scale efficiently.",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2a4 4 0 014 4c0 1.95-1.4 3.58-3.25 3.93V12h2.75a2.5 2.5 0 012.5 2.5V16a4 4 0 11-2 0v-1.5a.5.5 0 00-.5-.5h-6a.5.5 0 00-.5.5V16a4 4 0 11-2 0v-1.5A2.5 2.5 0 019.5 12h2.75V9.93A4.001 4.001 0 0112 2z"/>
       </svg>
     ),
   },
@@ -36,22 +46,12 @@ const services = [
     ),
   },
   {
-    title: "Mobile-First Design",
+    title: "Digital Transformation",
     description:
-      "Every project starts with mobile users in mind. We ensure your product works beautifully on phones, tablets, and desktops.",
+      "We help businesses move beyond manual processes and embrace smart, digital solutions — improving efficiency and driving growth across operations.",
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
-      </svg>
-    ),
-  },
-  {
-    title: "DevOps & Deployment",
-    description:
-      "We handle the full deployment pipeline — from CI/CD setup to hosting configuration, monitoring, and production maintenance.",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
       </svg>
     ),
   },
@@ -75,22 +75,26 @@ export default function HomePage() {
         <div className="hero__bg">
           <div className="hero__bg-gradient" />
           <div className="hero__grid" />
+          <div className="hero__orb hero__orb--1" />
+          <div className="hero__orb hero__orb--2" />
+          <div className="hero__orb hero__orb--3" />
+          <div className="hero__glow-ring" />
         </div>
         <div className="hero__content">
           <AnimateOnScroll>
-            <span className="section-label">Software Development Company</span>
+            <span className="section-label">Technology Company</span>
           </AnimateOnScroll>
           <AnimateOnScroll delay={80}>
             <h1 className="hero__title text-balance">
-              We build software that{" "}
-              <span className="gradient-text">actually works</span>
+              Turning ideas into{" "}
+              <span className="gradient-text">impactful solutions</span>
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll delay={160}>
             <p className="hero__subtitle">
-              LetsCode is a team of{" "}
+              LetsCode builds intelligent, scalable digital solutions for businesses and organizations — from web and mobile applications to{" "}
               <TypeWriter
-                words={["developers", "builders", "problem solvers", "engineers"]}
+                words={["AI-powered systems", "smart platforms", "digital products", "scalable solutions"]}
                 className="gradient-text"
               />
             </p>
@@ -114,11 +118,11 @@ export default function HomePage() {
           <AnimateOnScroll>
             <div className="section__header">
               <span className="section-label">About Us</span>
-              <h2 className="section__title">A small team doing real work</h2>
+              <h2 className="section__title">From a simple vision to real impact</h2>
               <p className="section__desc">
-                We are not a massive agency. We are a focused group of developers
-                who write clean code, communicate honestly, and ship products that
-                people actually use.
+                Every great idea starts small. LetsCode began with a simple
+                vision — to help businesses move beyond manual processes and
+                embrace smart, digital solutions.
               </p>
             </div>
           </AnimateOnScroll>
@@ -127,22 +131,21 @@ export default function HomePage() {
             <AnimateOnScroll>
               <div className="about-text">
                 <p>
-                  LetsCode started as a group of developers who kept finding
-                  themselves working on the same kinds of problems — building
-                  web apps, setting up backends, cleaning up codebases that
-                  needed structure. So we made it official.
+                  What started as just an idea has now grown into something real.
+                  Today, we are proud to introduce LetsCode — a technology
+                  company focused on building intelligent, scalable digital
+                  solutions for businesses and organizations.
                 </p>
                 <p>
-                  Based in Ghana with collaborators across borders, we work
-                  across time zones and tech stacks. Our approach is
-                  straightforward: understand the problem, plan the solution,
-                  build it well, and maintain it properly.
+                  From web and mobile applications to AI-powered systems, our
+                  goal is to turn ideas into impactful, real-world solutions
+                  that improve efficiency and drive growth.
                 </p>
                 <p>
-                  Every developer on our team has their own portfolio page on
-                  this site. We believe in transparency — you should know
-                  exactly who is working on your project and what they bring
-                  to the table.
+                  We believe the future belongs to those who build, innovate,
+                  and adapt — and we are here to be part of that future. Based
+                  in Ghana with collaborators across borders, this is just the
+                  beginning of our journey. 🚀
                 </p>
               </div>
             </AnimateOnScroll>
@@ -172,15 +175,16 @@ export default function HomePage() {
       </section>
 
       {/* ── Services ── */}
-      <section id="services" className="section">
+      <section id="services" className="section section--glow-top">
         <div className="section__inner">
           <AnimateOnScroll>
             <div className="section__header">
               <span className="section-label">What We Do</span>
               <h2 className="section__title">Services</h2>
               <p className="section__desc">
-                From frontend interfaces to backend infrastructure — we handle
-                the full stack so you can focus on your business.
+                From web and mobile applications to AI-powered systems — we
+                build intelligent solutions that improve efficiency and drive
+                growth for your business.
               </p>
             </div>
           </AnimateOnScroll>
@@ -224,7 +228,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Contact ── */}
-      <section id="contact" className="section">
+      <section id="contact" className="section section--glow-top">
         <div className="section__inner">
           <AnimateOnScroll>
             <div className="section__header">

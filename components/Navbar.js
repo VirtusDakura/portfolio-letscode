@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -30,7 +31,7 @@ export default function Navbar() {
       >
         <div className="navbar__inner">
           <Link href="/" className="navbar__logo" onClick={() => setMobileOpen(false)}>
-            <span className="navbar__logo-icon">LC</span>
+            <Image src="/Logo.jpeg" alt="LetsCode" width={36} height={36} className="navbar__logo-img" />
             LetsCode
           </Link>
 
@@ -66,7 +67,7 @@ export default function Navbar() {
         <div className="mobile-nav__panel" onClick={(e) => e.stopPropagation()}>
           <div className="mobile-nav__header">
             <Link href="/" className="navbar__logo" onClick={() => setMobileOpen(false)}>
-              <span className="navbar__logo-icon">LC</span>
+              <Image src="/Logo.jpeg" alt="LetsCode" width={36} height={36} className="navbar__logo-img" />
               LetsCode
             </Link>
             <button

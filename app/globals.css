@@ -37,6 +37,7 @@
     color: var(--color-text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   ::selection {
@@ -161,17 +162,12 @@
     text-decoration: none;
     letter-spacing: -0.02em;
   }
-  .navbar__logo-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
+  .navbar__logo-img {
+    width: 2.25rem;
+    height: 2.25rem;
     border-radius: var(--radius-sm);
-    background: var(--color-accent);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 800;
+    object-fit: cover;
+    flex-shrink: 0;
   }
 
   .navbar__links {
@@ -624,8 +620,8 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(109, 92, 255, 0.1), transparent 60%),
-      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(59, 130, 246, 0.06), transparent),
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(109, 92, 255, 0.12), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(59, 130, 246, 0.07), transparent),
       linear-gradient(to bottom, var(--color-bg), var(--color-bg));
     z-index: 1;
   }
@@ -633,13 +629,62 @@
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
     background-size: 72px 72px;
     opacity: 0.6;
     z-index: 2;
     mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
     -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  }
+  /* Floating orbs in hero */
+  .hero__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0;
+    z-index: 1;
+    will-change: transform, opacity;
+    pointer-events: none;
+    animation: heroOrbFade 1.2s ease forwards;
+  }
+  .hero__orb--1 {
+    width: 500px;
+    height: 500px;
+    background: rgba(109, 92, 255, 0.12);
+    top: -10%;
+    left: -8%;
+    animation: heroOrbFade 1.2s ease forwards, orbFloat1 18s ease-in-out infinite;
+  }
+  .hero__orb--2 {
+    width: 400px;
+    height: 400px;
+    background: rgba(59, 130, 246, 0.08);
+    bottom: -5%;
+    right: -5%;
+    animation: heroOrbFade 1.2s 0.3s ease forwards, orbFloat2 22s ease-in-out infinite;
+  }
+  .hero__orb--3 {
+    width: 250px;
+    height: 250px;
+    background: rgba(168, 85, 247, 0.07);
+    top: 40%;
+    right: 20%;
+    animation: heroOrbFade 1.2s 0.6s ease forwards, orbFloat3 15s ease-in-out infinite;
+  }
+  /* Glow ring behind hero content */
+  .hero__glow-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(109, 92, 255, 0.05) 0%, transparent 70%);
+    z-index: 3;
+    pointer-events: none;
+    animation: pulseRing 6s ease-in-out infinite;
   }
   .hero__content {
     position: relative;
@@ -673,12 +718,43 @@
   /* ═══════════ Section Layout ═══════════ */
   .section {
     padding: 5rem 0;
+    position: relative;
   }
   @media (min-width: 1024px) {
     .section { padding: 6.5rem 0; }
   }
   .section--alt {
     background: rgba(255, 255, 255, 0.012);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Subtle glow accent on alternating sections */
+  .section--alt::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(109, 92, 255, 0.035), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .section--alt .section__inner {
+    position: relative;
+    z-index: 1;
+  }
+  /* Glowing divider line between sections */
+  .section--glow-top::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(500px, 60vw);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(109, 92, 255, 0.25), rgba(59, 130, 246, 0.15), transparent);
   }
   .section__inner {
     max-width: 1200px;
@@ -1057,4 +1133,110 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* ═══════════════════════ Ambient Background ═══════════════════════ */
+
+/* Global floating ambient orbs — fixed behind everything, forming a fluid mesh */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: var(--color-bg);
+}
+.ambient__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  will-change: transform;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.ambient__orb--1 {
+  width: 70vw;
+  height: 70vh;
+  background: rgba(109, 92, 255, 0.08);
+  top: -10%;
+  left: -10%;
+  animation: ambientDrift1 20s ease-in-out infinite alternate;
+}
+.ambient__orb--2 {
+  width: 60vw;
+  height: 60vh;
+  background: rgba(59, 130, 246, 0.07);
+  bottom: -10%;
+  right: -10%;
+  animation: ambientDrift2 25s ease-in-out infinite alternate;
+}
+.ambient__orb--3 {
+  width: 50vw;
+  height: 50vh;
+  background: rgba(168, 85, 247, 0.06);
+  top: 40%;
+  left: 30%;
+  animation: ambientDrift3 22s ease-in-out infinite alternate;
+}
+
+/* Subtle grain texture overlay to add premium tactile feel */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: overlay;
+}
+
+/* ═══════════════════════ Keyframes ═══════════════════════ */
+
+/* Hero orb fade-in */
+@keyframes heroOrbFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Hero orb floating paths */
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(40px, 30px); }
+  66%      { transform: translate(-20px, 15px); }
+}
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(-30px, -25px); }
+  66%      { transform: translate(20px, -10px); }
+}
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-25px, 20px); }
+}
+
+/* Pulsing glow ring */
+@keyframes pulseRing {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.08); }
+}
+
+/* Global ambient drifts — very slow, subtle */
+@keyframes ambientDrift1 {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(60px, 40px); }
+  50%      { transform: translate(30px, 80px); }
+  75%      { transform: translate(-30px, 40px); }
+}
+@keyframes ambientDrift2 {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(-50px, -30px); }
+  50%      { transform: translate(-20px, -60px); }
+  75%      { transform: translate(30px, -20px); }
+}
+@keyframes ambientDrift3 {
+  0%, 100% { transform: translate(0, 0); }
+  33%      { transform: translate(-40px, -30px); }
+  66%      { transform: translate(30px, -50px); }
 }

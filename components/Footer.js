@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -9,11 +10,11 @@ export default function Footer() {
         <div className="footer__top">
           <div className="footer__brand">
             <Link href="/" className="navbar__logo">
-              <span className="navbar__logo-icon">LC</span>
+              <Image src="/Logo.jpeg" alt="LetsCode" width={36} height={36} className="navbar__logo-img" />
               LetsCode
             </Link>
             <p className="footer__tagline">
-              Building thoughtful software that solves real problems.
+              Turning ideas into impactful, real-world solutions that improve efficiency and drive growth.
             </p>
           </div>
 
