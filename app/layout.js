@@ -30,10 +30,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <head>
-        <link href="/assets/img/favicon.png" rel="icon" />
-        <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
-      </head>
+
       <body className="font-sans">
         {/* Ambient background effects */}
         <div className="ambient" aria-hidden="true">
