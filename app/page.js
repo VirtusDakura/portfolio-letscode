@@ -2,6 +2,7 @@ import { teamMembers } from "@/data/team";
 import TeamCard from "@/components/TeamCard";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import TypeWriter from "@/components/TypeWriter";
+import ContactForm from "@/components/ContactForm";
 
 const services = [
   {
@@ -241,39 +242,40 @@ export default function HomePage() {
             </div>
           </AnimateOnScroll>
 
-          <div className="flex flex-wrap justify-center gap-6 mt-12">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 mt-12 max-w-6xl mx-auto items-start">
             <AnimateOnScroll>
-              <a href="mailto:letscode@example.com" className="group flex flex-col items-center justify-center gap-5 p-8 rounded-2xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:border-[var(--color-accent)] hover:-translate-y-2 transition-all w-48 md:w-56 shadow-lg hover:shadow-[0_10px_30px_rgba(109,92,255,0.15)] text-center">
-                <div className="w-16 h-16 rounded-2xl bg-[var(--color-accent-soft)] text-[var(--color-accent)] flex items-center justify-center group-hover:scale-110 group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all duration-300 border border-[var(--color-border-hover)] group-hover:border-transparent">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="2"/>
-                    <path d="M22 4l-10 8L2 4"/>
-                  </svg>
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-2xl font-bold text-[var(--color-heading)] mb-4">Send us a message</h3>
+                  <p className="text-[var(--color-text)] leading-relaxed">
+                    Whether you have a strategic vision, a technical challenge, or a simple question, we are here to help. Fill out the form and our team will get back to you promptly.
+                  </p>
                 </div>
-                <span className="text-[var(--color-heading)] font-semibold text-sm">letscode@example.com</span>
-              </a>
-            </AnimateOnScroll>
+                
+                <div className="flex flex-wrap gap-4">
+                  <a href="https://github.com" target="_blank" rel="noreferrer" className="group flex items-center justify-center gap-3 p-4 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:border-[var(--color-accent)] transition-all shadow-sm flex-1 md:flex-none hover:shadow-[0_4px_20px_rgba(109,92,255,0.1)]">
+                    <div className="text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                      </svg>
+                    </div>
+                    <span className="text-[var(--color-heading)] font-medium">@LetsCode</span>
+                  </a>
 
-            <AnimateOnScroll delay={60}>
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="group flex flex-col items-center justify-center gap-5 p-8 rounded-2xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:border-[var(--color-accent)] hover:-translate-y-2 transition-all w-48 md:w-56 shadow-lg hover:shadow-[0_10px_30px_rgba(109,92,255,0.15)] text-center">
-                <div className="w-16 h-16 rounded-2xl bg-[var(--color-accent-soft)] text-[var(--color-accent)] flex items-center justify-center group-hover:scale-110 group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all duration-300 border border-[var(--color-border-hover)] group-hover:border-transparent">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                  </svg>
+                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="group flex items-center justify-center gap-3 p-4 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:border-[#0077b5] transition-all shadow-sm flex-1 md:flex-none hover:shadow-[0_4px_20px_rgba(0,119,181,0.15)]">
+                    <div className="text-[var(--color-text-muted)] group-hover:text-[#0077b5] transition-colors">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                    </div>
+                    <span className="text-[var(--color-heading)] font-medium">@LetsCode</span>
+                  </a>
                 </div>
-                <span className="text-[var(--color-heading)] font-semibold text-sm">@LetsCode</span>
-              </a>
+              </div>
             </AnimateOnScroll>
-
-            <AnimateOnScroll delay={120}>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="group flex flex-col items-center justify-center gap-5 p-8 rounded-2xl bg-[var(--color-bg-card)] border border-[var(--color-border)] hover:border-[var(--color-accent)] hover:-translate-y-2 transition-all w-48 md:w-56 shadow-lg hover:shadow-[0_10px_30px_rgba(109,92,255,0.15)] text-center">
-                <div className="w-16 h-16 rounded-2xl bg-[var(--color-accent-soft)] text-[var(--color-accent)] flex items-center justify-center group-hover:scale-110 group-hover:bg-[var(--color-accent)] group-hover:text-white transition-all duration-300 border border-[var(--color-border-hover)] group-hover:border-transparent">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                  </svg>
-                </div>
-                <span className="text-[var(--color-heading)] font-semibold text-sm">@LetsCode</span>
-              </a>
+            
+            <AnimateOnScroll delay={100}>
+              <ContactForm />
             </AnimateOnScroll>
           </div>
         </div>
