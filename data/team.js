@@ -63,18 +63,18 @@ export const teamMembers = [
   },
   {
     slug: "martin-okantey",
-    name: "Martin Okantey",
-    role: "Creative Developer",
+    name: "Martin Okantey Jairus Nii Okaitey",
+    role: "Chief Research Officer & Game Designer",
     location: "Ghana",
     linkedin: "https://www.linkedin.com/in/martin-okantey-jairus-nii-okaitey-947321398/",
-    image: "/images/profiles/martin.webp",
-    bio: "Martin sits at the crossroads of design and code. As a creative developer with experience at OGames Studio, he brings interactive experiences to life — from game mechanics to polished web interfaces. He thinks in prototypes and ships with intention.",
+    image: "/images/profiles/martin.jpeg",
+    bio: "Martin is a Chemistry student at the University of Ghana, with a passion for environmental science, now working with OGames Studio where he helps build creative digital experiences. He is passionate about music, plays every brass instrument, and stays active through sports. He loves learning, creating, and bringing ideas to life across science, tech, and the arts.",
     expertise: [
-      "Interactive Design",
-      "Game Development",
-      "Creative Prototyping",
-      "Motion Design",
-      "Frontend Development"
+      "Game Design & Research",
+      "Environmental Science",
+      "EdTech",
+      "Artificial Intelligence",
+      "Music & Arts"
     ],
     stack: ["JavaScript", "Three.js", "Unity", "Figma", "GSAP"],
     projects: [
